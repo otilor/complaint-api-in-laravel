@@ -10,6 +10,10 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ComplaintController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('jwt.verify');
+    }
     /**
      * Display a listing of the resource.
      *
