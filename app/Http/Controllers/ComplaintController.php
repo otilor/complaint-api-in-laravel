@@ -12,6 +12,17 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ComplaintController extends Controller
 {
+    /**
+     * Find a certain complaint from the database.
+     * 
+     * @param int $id
+     * @return bool
+     */
+    public function findOrFail($id)
+    {
+        return Complaint::findOrFail($id);
+    }
+
     public function __construct()
     {
         //
@@ -69,8 +80,9 @@ class ComplaintController extends Controller
      */
     public function show($id)
     {
+        
             try{
-                $complaint = Complaint::findOrFail($id);
+                $complaint = $this->findOrFail($id);
                 return response()->json($complaint);
             }catch (ModelNotFoundException $exception){
                 $message = ["message"=>$exception->getMessage()];
@@ -105,7 +117,22 @@ class ComplaintController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'body'=>'required'
+        ]);
+
+        // If the validation fails
+        if ($validator->fails())
+        {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $complaint = Complaint::findOrFail($id);
+        $complaint->update(['title' => $request->title, 'body' => $request->body]);
+        // Send response fulfilled request response.
+        return response()->json(["complaint" => $complaint, "status"=>"success"], 201);
+
     }
 
     /**
