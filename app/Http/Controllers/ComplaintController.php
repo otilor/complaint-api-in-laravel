@@ -122,6 +122,7 @@ class ComplaintController extends Controller
             'body'=>'required'
         ]);
 
+        // If the validation fails
         if ($validator->fails())
         {
             return response()->json(['error' => $validator->errors()], 400);
@@ -129,7 +130,8 @@ class ComplaintController extends Controller
 
         $complaint = Complaint::findOrFail($id);
         $complaint->update(['title' => $request->title, 'body' => $request->body]);
-        return response()->json($complaint, 200);
+        // Send response fulfilled request response.
+        return response()->json(["complaint" => $complaint, "status"=>"success"], 201);
 
     }
 
