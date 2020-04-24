@@ -60,9 +60,20 @@ class ComplaintController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request, Complaint $complaint)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'body' => 'required',
+        ]);
+
+        if ($validator->fails())
+        {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+        $complaint->create($request->all());
+        return response()->json(['status' => 'success'], 201);
+        
     }
 
     /**
@@ -89,9 +100,7 @@ class ComplaintController extends Controller
                 $complaint = $this->findOrFail($id);
                 return response()->json($complaint, 200);
             }catch (ModelNotFoundException $exception){
-                $message = ["message"=>$exception->getMessage()];
-
-                return response()->json($message, 404);
+                return response()->json(['message'=>$exception->getMessage(), 'status' => 'failed'], 400);
             }
             
 
@@ -147,6 +156,15 @@ class ComplaintController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+        $complaint = Complaint::findOrFail($id);
+
+        $complaint->delete();
+        
+        return response()->json(null, 204);
+        
+    }catch (ModelNotFoundException $exception){
+        return response()->json(['message'=>$exception->getMessage(), 'status' => 'failed'], 400);
     }
+}
 }
