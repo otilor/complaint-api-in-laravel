@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Complaint;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ComplaintController extends Controller
 {
@@ -36,7 +37,7 @@ class ComplaintController extends Controller
         $response = ["details" => $details, "complaints" => $complaints];
 
         return response()->json($response, 200);
-        
+
     }
 
     /**
@@ -68,7 +69,20 @@ class ComplaintController extends Controller
      */
     public function show($id)
     {
-        //
+            try{
+                $complaint = Complaint::findOrFail($id);
+                return response()->json($complaint);
+            }catch (ModelNotFoundException $exception){
+                $message = ["message"=>$exception->getMessage()];
+
+                return response()->json($message);
+            }
+            
+
+            //
+        
+        
+        
     }
 
     /**
