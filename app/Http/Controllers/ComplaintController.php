@@ -7,12 +7,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Complaint;
 
 class ComplaintController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt.verify');
+        //
     }
     /**
      * Display a listing of the resource.
@@ -21,8 +22,20 @@ class ComplaintController extends Controller
      */
     public function index()
     {
-        // Let's hope the person sees this
-        return response()->json("Welcome", 200);
+        
+        $complaints = Complaint::all();
+        
+        $declined = 23;
+        
+        $pending = 12;
+
+        $accepted = 15;
+
+        $details = ["total" => count($complaints),  "pending" => $pending, "accepted" => $accepted, "declined" => $declined];
+        
+        $response = ["details" => $details, "complaints" => $complaints];
+
+        return response()->json($response, 200);
     }
 
     /**

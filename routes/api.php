@@ -26,6 +26,7 @@ Route::get('open', 'DataController@open');
 
 
 Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::get('/', 'ComplaintController@index');
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('closed', 'DataController@closed');
         
