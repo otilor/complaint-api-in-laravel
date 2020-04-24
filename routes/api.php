@@ -26,8 +26,8 @@ Route::get('open', 'DataController@open');
 
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-    Route::resource('/', 'ComplaintController');
     Route::get('/{id}', 'ComplaintController@show');
+    Route::post('/{id}', 'ComplaintController@update');
      
     
 });
