@@ -24,7 +24,7 @@ class ComplaintController extends Controller
     {
         
         $complaints = Complaint::all();
-        
+
         $declined = 23;
         
         $pending = 12;
@@ -36,6 +36,7 @@ class ComplaintController extends Controller
         $response = ["details" => $details, "complaints" => $complaints];
 
         return response()->json($response, 200);
+        
     }
 
     /**
