@@ -21,6 +21,7 @@ class ComplaintController extends Controller
      */
     public function index()
     {
+        // Let's hope the person sees this
         return response()->json("Welcome", 200);
     }
 
