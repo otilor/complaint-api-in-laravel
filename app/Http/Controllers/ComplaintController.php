@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Gabriel Akinyosoye
+ * @email gabrielfemi799@gmail.com
+ */
 
 namespace App\Http\Controllers;
 
@@ -83,11 +87,11 @@ class ComplaintController extends Controller
         
             try{
                 $complaint = $this->findOrFail($id);
-                return response()->json($complaint);
+                return response()->json($complaint, 200);
             }catch (ModelNotFoundException $exception){
                 $message = ["message"=>$exception->getMessage()];
 
-                return response()->json($message);
+                return response()->json($message, 404);
             }
             
 
@@ -131,7 +135,7 @@ class ComplaintController extends Controller
         $complaint = Complaint::findOrFail($id);
         $complaint->update(['title' => $request->title, 'body' => $request->body]);
         // Send response fulfilled request response.
-        return response()->json(["complaint" => $complaint, "status"=>"success"], 201);
+        return response()->json(["complaint" => $complaint, "status"=>"success"], 200);
 
     }
 

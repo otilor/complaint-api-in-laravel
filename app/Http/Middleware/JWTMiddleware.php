@@ -27,7 +27,7 @@
                 }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
                     return response()->json(['status' => 'Token is Expired']);
                 }else{
-                    return response()->json(['status' => 'Authorization Token not found. Are you logged in?']);
+                    return response()->json(['status' => 'Authorization Token not found. Are you logged in?'], 401);
                 }
             }
             return $next($request);
